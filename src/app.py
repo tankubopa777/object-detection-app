@@ -40,16 +40,19 @@ def annotate_image(
             # display the prediction
             label = f"{CLASSES[idx]}: {round(confidence * 100, 2)}%"
             labels.append(label)
-            cv2.rectangle(image, (startX, startY), (endX, endY), COLORS[idx], 2)
+            cv2.rectangle(image, (startX, startY),
+                          (endX, endY), COLORS[idx], 2)
             y = startY - 15 if startY - 15 > 15 else startY + 15
             cv2.putText(
-                image, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2
+                image, label, (startX,
+                               y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2
             )
     return image, labels
 
 
 st.title("Object detection with MobileNet SSD")
-img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
+img_file_buffer = st.file_uploader(
+    "Upload an image", type=["png", "jpg", "jpeg"])
 confidence_threshold = st.slider(
     "Confidence threshold", 0.0, 1.0, DEFAULT_CONFIDENCE_THRESHOLD, 0.05
 )
@@ -59,7 +62,7 @@ if img_file_buffer is not None:
 
 else:
     demo_image = DEMO_IMAGE
-    image = np.array(Image.open(demo_image))
+    image = np.array(Image.open(cv2.demosaicing))
 
 detections = process_image(image)
 image, labels = annotate_image(image, detections, confidence_threshold)
